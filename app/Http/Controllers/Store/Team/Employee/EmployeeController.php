@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Store\Team\Employee;
 
+use App\Http\Controllers\Controller;
 use App\Models\Store\Team\Employee\Employee;
 use Illuminate\Http\Request;
 
