@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('created_by')->constrained('users')->onDelete('no action')->onUpdate('cascade');
             $table->foreignId('user')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('store')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('type')->constrained('employees_types')->onDelete('restrict')->onUpdate('cascade');
+            $table->integer('type');
             $table->timestamps();
         });
     }
