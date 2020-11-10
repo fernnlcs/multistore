@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Store\Formal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Store\Formal\Store;
+use App\Models\Store\Team\Employee\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
@@ -15,7 +17,10 @@ class StoreController extends Controller
      */
     public function index()
     {
-        //
+        $myStores = Store::all();
+        return view('store.index', [
+            'myStores' => $myStores
+        ]);
     }
 
     /**
@@ -25,7 +30,7 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        return view('store.create');
     }
 
     /**
@@ -36,7 +41,26 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $store = new Store();
+        $store->created_by = Auth::id();
+        $store->cnpj = $request->cnpj;
+        $store->name = $request->name;
+        $store->slug = $request->slug;
+        $store->email = $request->email;
+        $store->phone = $request->phone;
+
+        if ($store->save()) {
+            $employee = new Employee();
+            $employee->created_by = Auth::id();
+            $employee->user = Auth::id();
+            $employee->store = $store->id;
+            $employee->type = Employee::owner['id'];
+            $employee->save();
+
+            return redirect()->route('store.index');
+        }
+
+        return redirect()->route('store.create');
     }
 
     /**
