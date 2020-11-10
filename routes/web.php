@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Store\Formal\StoreController;
+use App\Http\Controllers\Store\Product\ProductController;
+use App\Http\Controllers\Store\Team\Employee\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [StoreController::class, 'index'])->middleware('auth');
 
+Route::resource('loja', StoreController::class)->names('store')->parameters(['loja' => 'store'])->middleware('auth');
 
+Route::resource('funcionario', EmployeeController::class)->names('employee')->parameters(['funcionario' => 'employee'])->except('index')->middleware('auth');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
