@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Store\Team\Employee\Employee;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -17,6 +19,8 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+    protected $table = "users";
 
     /**
      * The attributes that are mass assignable.
@@ -58,4 +62,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function createdEmployees(): HasMany
+    {
+        return $this->hasMany(Employee::class, 'created_by', 'id');
+    }
+
+    public function worksAs(): HasMany
+    {
+        return $this->hasMany(Employee::class, 'user', 'id');
+    }
 }

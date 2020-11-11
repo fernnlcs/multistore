@@ -11,10 +11,10 @@
 <body>
     <h1>Suas lojas</h1>
     <ul>
-        @foreach ($myStores as $store)
+        @foreach ($myJobs as $employee)
             <li>
-                <a href="{{ route('store.show', ['store' => $store]) }}">
-                    {{ $store->name }}
+                <a href="{{ route('store.show', ['store' => $employee->store()->first()]) }}">
+                    {{ $employee->store()->first()->name }}
                 </a>
             </li>
         @endforeach

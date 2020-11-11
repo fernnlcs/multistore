@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Store\Team\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Store\Formal\Store;
 use App\Models\Store\Team\Employee\Employee;
-use App\Models\Store\Team\Employee\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +16,17 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Store $store)
     {
-        //
+        $employees = $store->employees();
+        $types = Employee::TYPE;
+        array_pop($types);
+
+        return view('store.team.employee.index', [
+            'store' => $store,
+            'employees' => $employees,
+            'types' => $types
+        ]);
     }
 
     /**
@@ -27,9 +34,15 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Store $store)
     {
-        //
+        $types = Employee::TYPE;
+        array_pop($types);
+
+        return view('store.team.employee.create', [
+            'store' => $store,
+            'types' => $types
+        ]);
     }
 
     /**
@@ -38,17 +51,21 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Store $store, User $user, Type $type)
+    public function store(Request $request, Store $store)
     {
-        $employee = Employee::find($user->id);
-        $employee->created_by = Auth::id();
-        $employee->user = $user->id;
-        $employee->store = $store->id;
-        $employee->type = $type->id;
+        $user = User::where('email', '=', $request->email);
 
-        $employee->save();
-        
-        return;
+        if ($user->count()) {
+            $employee = new Employee();
+            $employee->created_by = Auth::id();
+            $employee->user = $user->first()->id;
+            $employee->store = $store->id;
+            $employee->type = $request->type;
+
+            $employee->save();
+        }
+
+        return redirect()->route('store.show', ['store' => $store]);
     }
 
     /**
@@ -80,9 +97,12 @@ class EmployeeController extends Controller
      * @param  \App\Models\Store\Team\Employee\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, Store $store, Employee $employee)
     {
-        //
+        $employee->type = $request->type;
+        $employee->save();
+
+        return redirect()->route('employee.index', ['store' => $store]);
     }
 
     /**
@@ -91,8 +111,10 @@ class EmployeeController extends Controller
      * @param  \App\Models\Store\Team\Employee\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy(Store $store, Employee $employee)
     {
-        //
+        $employee->delete();
+
+        return redirect()->route('employee.index', ['store' => $store]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Store\Formal;
 use App\Http\Controllers\Controller;
 use App\Models\Store\Formal\Store;
 use App\Models\Store\Team\Employee\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,9 +18,9 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $myStores = Store::all();
+        $myJobs = (User::find(Auth::id()))->worksAs()->get();
         return view('store.index', [
-            'myStores' => $myStores
+            'myJobs' => $myJobs
         ]);
     }
 
@@ -54,7 +55,7 @@ class StoreController extends Controller
             $employee->created_by = Auth::id();
             $employee->user = Auth::id();
             $employee->store = $store->id;
-            $employee->type = Employee::owner['id'];
+            $employee->type = Employee::TYPE['OWNER']['id'];
             $employee->save();
 
             return redirect()->route('store.index');
@@ -71,7 +72,11 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        //
+        $employees = $store->employees();
+        return view('store.show', [
+            'store' => $store,
+            'employees' => $employees
+        ]);
     }
 
     /**

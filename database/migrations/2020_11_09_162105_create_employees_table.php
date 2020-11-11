@@ -20,6 +20,8 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('store')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('type');
             $table->timestamps();
+
+            $table->unique('user', 'store');
         });
     }
 

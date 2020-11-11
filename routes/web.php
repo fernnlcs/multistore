@@ -20,7 +20,7 @@ Route::get('/', [StoreController::class, 'index'])->middleware('auth');
 
 Route::resource('loja', StoreController::class)->names('store')->parameters(['loja' => 'store'])->middleware('auth');
 
-Route::resource('funcionario', EmployeeController::class)->names('employee')->parameters(['funcionario' => 'employee'])->except('index')->middleware('auth');
+Route::resource('loja/{store}/funcionario', EmployeeController::class)->names('employee')->parameters(['funcionario' => 'employee'])->middleware('auth');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
