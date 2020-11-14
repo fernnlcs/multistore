@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Colaboradores de {{ $store->name }}</title>
+    <title>Equipe de {{ $store->name }}</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
             {{ $store->name }}
         </a>
     </h1>
-    <h2>Todos os colaboradores</h2>
+    <h2>Todos da equipe</h2>
     <a href="{{ route('employee.create', ['store' => $store]) }}">Adicionar novo</a>
     <table>
         <thead>
