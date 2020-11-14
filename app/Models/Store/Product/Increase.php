@@ -46,6 +46,6 @@ class Increase extends Model
 
     public function finalUnitPrice(): float
     {
-        return $this->finalTotalPrice() / $this->amount;w
+        return $this->finalTotalPrice() / $this->amount;
     }
 }
