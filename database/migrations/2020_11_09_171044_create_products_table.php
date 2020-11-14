@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('store')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
             $table->string('barcode')->nullable();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->float('default_price', 8, 2);
             $table->string('description')->nullable();
             $table->string('measure')->nullable();
@@ -33,6 +33,8 @@ class CreateProductsTable extends Migration
             $table->boolean('deliverable');
             $table->timestamp('expiration')->nullable();
             $table->timestamps();
+
+            $table->unique(['store', 'slug']);
         });
     }
 

@@ -19,6 +19,8 @@ class CreateStoresCategoriesTable extends Migration
             $table->foreignId('store')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('category')->constrained('general_categories')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
+
+            $table->unique(['store', 'category']);
         });
     }
 

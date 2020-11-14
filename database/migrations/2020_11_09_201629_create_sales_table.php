@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartsTable extends Migration
+class CreateSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateCartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('no action')->onUpdate('cascade');
-            $table->foreignId('sold_by')->constrained('users')->onDelete('no action')->onUpdate('cascade');
-            $table->foreignId('delivered_by')->constrained('users')->onDelete('no action')->onUpdate('cascade')->nullable();
-            $table->foreignId('store')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('client')->nullable();
+            $table->foreignId('cart')->constrained('carts')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('product')->constrained('products')->onDelete('no action')->onUpdate('cascade');
+            $table->float('amount', 8, 2);
+            $table->float('primary_unit_price', 8, 2);
             $table->float('discount', 8, 2);
             $table->float('addition', 8, 2);
-            $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ class CreateCartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('sales');
     }
 }

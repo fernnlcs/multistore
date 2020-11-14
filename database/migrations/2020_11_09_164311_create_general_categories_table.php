@@ -16,8 +16,8 @@ class CreateGeneralCategoriesTable extends Migration
         Schema::create('general_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users')->onDelete('no action')->onUpdate('cascade');
-            $table->string('name');
-            $table->string('slug');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

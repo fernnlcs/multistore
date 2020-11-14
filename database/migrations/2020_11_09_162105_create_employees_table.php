@@ -21,7 +21,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('type');
             $table->timestamps();
 
-            $table->unique('user', 'store');
+            $table->unique(['user', 'store']);
         });
     }
 
